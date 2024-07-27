@@ -27,12 +27,20 @@ public class Snake {
     private String direction = "RIGHT";
 
     /**
+     * The grid where the snake is moving
+     */
+    private Grid grid;
+
+    /**
      * Constructs a Snake instance with the specified picture
      * Initializes the snake's position and starts its automatic movement
+     *
      * @param picture representing the snake
+     * @param grid where snake is moving
      */
-    public Snake(Picture picture) {
+    public Snake(Picture picture, Grid grid) {
         this.picture = picture;
+        this.grid = grid;
         picture.draw();
         startMovement();
     }
@@ -73,21 +81,46 @@ public class Snake {
      * Moves the snake in the chosen direction
      */
     private void move() {
+
+        /**
+         * Initialize movement 'D' for x and y coordinates
+         */
+        int dx = 0;
+        int dy = 0;
+
         switch (direction) {
             case "LEFT":
-                picture.translate(-10,0);
+                // Move left by decreasing x
+                dx = -10;
                 break;
-            case  "RIGHT":
-                picture.translate(10,0);
+            case "RIGHT":
+                // Move right by increasing x
+                dx = 10;
                 break;
             case "UP":
-                picture.translate(0,-10);
+                // Move up by decreasing y
+                dy = -10;
                 break;
             case "DOWN":
-                picture.translate(0,10);
+                // Move down by increasing y
+                dy = 10;
                 break;
             default:
                 break;
+        }
+
+        /**
+         * CaLculate the new position of the snake head
+         */
+        int newX = picture.getX() + dx;
+        int newY = picture.getY() + dy;
+
+        /**
+         * Check if new position is within the grid boundaries
+         */
+        if (grid.isWithinBounds(newX, newY, picture.getWidth(), picture.getHeight())) {
+            // Move snake to new position
+            picture.translate(dx, dy);
         }
     }
 
@@ -103,11 +136,5 @@ public class Snake {
             }
         });
         timer.start();
-    }
-
-    public void grow() {
-    }
-
-    public void reset() {
     }
 }
