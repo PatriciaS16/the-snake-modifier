@@ -24,6 +24,11 @@ public class Game {
     private Grid grid;
 
     /**
+     * Game over instance
+     */
+    private boolean gameOver = false;
+
+    /**
      * Constructs a game instance
      * Initializes the grid and snake
      * Sets up the game environment with specified padding and image
@@ -34,21 +39,33 @@ public class Game {
         int padding = 10;
 
         // Create the background picture for the grid
-        Picture background = new Picture(10,10, Game.PREFIX + "LighterBackground.png");
+        Picture background = new Picture(10, 10, Game.PREFIX + "LighterBackground.png");
         // Initialize the grid with the background picture and padding
         this.grid = new Grid(background, padding);
 
         // Create the picture object for the snake with its initial position
-        Picture snakePicture = new Picture(400,350, Game.PREFIX + "SnakeHead.png");
+        Picture snakePicture = new Picture(400, 350, Game.PREFIX + "SnakeHead.png");
         // Initialize the snake with its picture and grid
         this.snake = new Snake(snakePicture, grid);
     }
 
     /**
      * Retrieves the snake instance associated with the game
+     *
      * @return the snake instance
      */
     public Snake getSnake() {
         return snake;
     }
+
+    /**
+     * Game over logic that check for collisions and ends the game if detects a collision
+     */
+
+    public void gameOver() {
+        if (CollisionHandler.checkSelfCollision() == true || grid.isWithinBounds() == false) {
+            System.exit();
+        }
+    }
 }
+
