@@ -4,137 +4,152 @@ import org.academiadecodigo.simplegraphics.pictures.Picture;
 import javax.swing.Timer;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * The Snake Class represents a snake in the game. Is handles the snake movement
- * and manages the direction movement
+ * The Snake class represents the snake in the game.
+ * It handles the snake's movement, growth, and interactions with the grid.
  */
 public class Snake {
+    private Picture head;  // The head of the snake
+    private Grid grid;     // The grid on which the snake moves
+    private List<Picture> body;  // The list of body parts of the snake
+    private Timer movementTimer; // Timer for controlling snake movement
+    private String direction = "RIGHT"; // Current movement direction of the snake
+    private boolean growing = false;  // Flag to determine if the snake is growing
 
     /**
-     * The picture object representing the snake head
-     */
-    private Picture picture;
-
-    /**
-     * The timer to control the movement of the snake
-     */
-    private Timer timer;
-
-    /**
-     * The current direction of the snake movement
-     */
-    private String direction = "RIGHT";
-
-    /**
-     * The grid where the snake is moving
-     */
-    private Grid grid;
-
-    /**
-     * Constructs a Snake instance with the specified picture
-     * Initializes the snake's position and starts its automatic movement
+     * Constructs a Snake instance with the specified head, grid, and initial body parts.
      *
-     * @param picture representing the snake
-     * @param grid where snake is moving
+     * @param head The picture representing the head of the snake
+     * @param grid The grid on which the snake moves
      */
-    public Snake(Picture picture, Grid grid) {
-        this.picture = picture;
+    public Snake(Picture head, Grid grid) {
+        this.head = head;
         this.grid = grid;
-        picture.draw();
+        int initialBody = 3;
+        this.body = new ArrayList<>(initialBody);
+
+        // Draw the head and body parts of the snake
+        head.draw();
+        for (Picture part : body) {
+            part.draw();
+        }
+
+        // Start the movement of the snake
         startMovement();
     }
 
     /**
-     * Sets the direction of the snake to the left
-     * The snake will move left in the next movement update
+     * Changes the direction of the snake to LEFT if it's not already moving RIGHT.
      */
-    public void moveLeft(){
-        direction = "LEFT";
+    public void moveLeft() {
+        if (!direction.equals("RIGHT")) direction = "LEFT";
     }
 
     /**
-     * Sets the direction of the snake to the right
-     * The snake will move right in the next movement update
+     * Changes the direction of the snake to RIGHT if it's not already moving LEFT.
      */
     public void moveRight() {
-        direction = "RIGHT";
+        if (!direction.equals("LEFT")) direction = "RIGHT";
     }
 
     /**
-     * Sets the direction of the snake to up
-     * The snake will move up in the next movement update
+     * Changes the direction of the snake to UP if it's not already moving DOWN.
      */
     public void moveUp() {
-        direction = "UP";
+        if (!direction.equals("DOWN")) direction = "UP";
     }
 
     /**
-     * Sets the direction of the snake to down
-     * The snake will move down in the next movement update
+     * Changes the direction of the snake to DOWN if it's not already moving UP.
      */
     public void moveDown() {
-        direction = "DOWN";
+        if (!direction.equals("UP")) direction = "DOWN";
     }
 
     /**
-     * Moves the snake in the chosen direction
+     * Moves the snake in the current direction and handles the growth and boundary checks.
      */
-    private void move() {
+    void move() {
+        int dx = 0;  // Change in x coordinate
+        int dy = 0;  // Change in y coordinate
 
-        /**
-         * Initialize movement 'D' for x and y coordinates
-         */
-        int dx = 0;
-        int dy = 0;
-
+        // Determine movement direction
         switch (direction) {
-            case "LEFT":
-                // Move left by decreasing x
-                dx = -10;
-                break;
-            case "RIGHT":
-                // Move right by increasing x
-                dx = 10;
-                break;
-            case "UP":
-                // Move up by decreasing y
-                dy = -10;
-                break;
-            case "DOWN":
-                // Move down by increasing y
-                dy = 10;
-                break;
-            default:
-                break;
+            case "LEFT": dx = -50; break;
+            case "RIGHT": dx = 50; break;
+            case "UP": dy = -50; break;
+            case "DOWN": dy = 50; break;
         }
 
-        /**
-         * CaLculate the new position of the snake head
-         */
-        int newX = picture.getX() + dx;
-        int newY = picture.getY() + dy;
+        int newX = head.getX() + dx;  // New x position of the head
+        int newY = head.getY() + dy;  // New y position of the head
 
-        /**
-         * Check if new position is within the grid boundaries
-         */
-        if (grid.isWithinBounds(newX, newY, picture.getWidth(), picture.getHeight())) {
-            // Move snake to new position
-            picture.translate(dx, dy);
+        // Debugging output for the intended movement
+        System.out.println("Attempting to move. Direction: " + direction);
+        System.out.println("New Head Position: X: " + newX + " Y: " + newY);
+
+        // Check if the new position is within bounds
+        if (grid.isWithinBounds(newX, newY, head.getWidth(), head.getHeight())) {
+            // Handle growth of the snake
+            if (growing) {
+                // Add a new body part at the current head position
+                Picture newBodyPart = new Picture(head.getX(), head.getY(), Game.PREFIX + "SnakeBody.png");
+                body.add(0, newBodyPart);
+                newBodyPart.draw();
+                growing = false; // Reset growing flag
+            } else if (!body.isEmpty()) {
+                // Move the tail to the position of the new head
+                Picture tail = body.remove(body.size() - 1);
+                tail.translate(head.getX() - tail.getX(), head.getY() - tail.getY());
+                body.add(0, tail);
+            }
+
+            // Move the head to the new position
+            head.translate(dx, dy);
+
+            // Ensure the head is properly updated
+            System.out.println("Head moved to: X: " + head.getX() + " Y: " + head.getY());
+        } else {
+            System.out.println("Move out of bounds. Movement stopped.");
         }
     }
 
     /**
-     * Starts the movement of the snake by creating a timer
-     * The timer triggers the move method at regular intervals
+     * Sets the flag to grow the snake on the next move.
+     */
+    public void grow() {
+        growing = true;
+    }
+
+    /**
+     * Starts the movement timer to repeatedly move the snake.
      */
     private void startMovement() {
-        timer = new Timer(100, new ActionListener() {
+        movementTimer = new Timer(700, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 move();
             }
         });
-        timer.start();
+        movementTimer.start();
+    }
+
+    /**
+     * Gets the head of the snake.
+     * @return The picture representing the head of the snake
+     */
+    public Picture getHead() {
+        return head;
+    }
+
+    /**
+     * Gets the body of the snake.
+     * @return The list of pictures representing the body parts of the snake
+     */
+    public List<Picture> getBody() {
+        return body;
     }
 }
