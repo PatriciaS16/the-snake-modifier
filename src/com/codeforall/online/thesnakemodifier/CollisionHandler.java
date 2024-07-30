@@ -4,6 +4,7 @@ import org.academiadecodigo.simplegraphics.pictures.Picture;
 import java.util.LinkedList;
 
 public class CollisionHandler  {
+
     /**
      * Checks if the snake has collided with itself.
      *
