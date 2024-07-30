@@ -1,18 +1,20 @@
-import com.codeforall.online.thesnakemodifier.Game;
-import com.codeforall.online.thesnakemodifier.MyKeyboard;
-import org.academiadecodigo.simplegraphics.graphics.Rectangle;
+import com.codeforall.online.thesnakemodifier.Menu;
+import com.codeforall.online.thesnakemodifier.MyMouse;
 
+/**
+ * The Main class is responsible for the entry point of the game
+ */
 public class Main {
     public static void main(String[] args) {
 
-        Rectangle rectangle = new Rectangle(10,10,800,700);
-        rectangle.draw();
-
-        Game game = new Game();
-
-        MyKeyboard myKeyboard = new MyKeyboard();
-        myKeyboard.setSnake(game.getSnake());
-        myKeyboard.init();
+        // Create an instance of menu
+        Menu menu = new Menu();
+        // Create an instance of my mouse
+        MyMouse myMouse = new MyMouse();
+        // Set the menu instance to my mouse
+        myMouse.setMenu(menu);
+        // Initialize the mouse event handling
+        myMouse.init();
 
     }
 }

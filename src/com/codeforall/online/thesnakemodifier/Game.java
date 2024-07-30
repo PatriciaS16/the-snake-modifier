@@ -39,9 +39,9 @@ public class Game {
         this.grid = new Grid(background, padding);
 
         // Create the picture object for the snake with its initial position
-        Picture snakePicture = new Picture(400,350, Game.PREFIX + "SnakeHead.png");
+        Picture snakeHead = new Picture(400,350, Game.PREFIX + "SnakeHead.png");
         // Initialize the snake with its picture and grid
-        this.snake = new Snake(snakePicture, grid);
+        this.snake = new Snake(snakeHead, grid);
     }
 
     /**

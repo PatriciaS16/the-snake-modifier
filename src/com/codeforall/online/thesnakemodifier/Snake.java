@@ -31,6 +31,7 @@ public class Snake {
      */
     private Grid grid;
 
+
     /**
      * Constructs a Snake instance with the specified picture
      * Initializes the snake's position and starts its automatic movement
@@ -39,9 +40,13 @@ public class Snake {
      * @param grid where snake is moving
      */
     public Snake(Picture picture, Grid grid) {
+        // Initialize the snake head picture
         this.picture = picture;
+        //Initialize the grid where the snake moves
         this.grid = grid;
+        // Draw the snake head on the screen
         picture.draw();
+        // Start the snake movement
         startMovement();
     }
 
@@ -88,10 +93,11 @@ public class Snake {
         int dx = 0;
         int dy = 0;
 
+        // Determine the movement direction and set dx and dy
         switch (direction) {
             case "LEFT":
                 // Move left by decreasing x
-                dx = -10;
+                dx = - 10;
                 break;
             case "RIGHT":
                 // Move right by increasing x
@@ -99,7 +105,7 @@ public class Snake {
                 break;
             case "UP":
                 // Move up by decreasing y
-                dy = -10;
+                dy = - 10;
                 break;
             case "DOWN":
                 // Move down by increasing y
@@ -109,17 +115,13 @@ public class Snake {
                 break;
         }
 
-        /**
-         * CaLculate the new position of the snake head
-         */
+        // Calculate the new position of the snake head
         int newX = picture.getX() + dx;
         int newY = picture.getY() + dy;
 
-        /**
-         * Check if new position is within the grid boundaries
-         */
+         // Check if new position is within the grid boundaries
         if (grid.isWithinBounds(newX, newY, picture.getWidth(), picture.getHeight())) {
-            // Move snake to new position
+            // Move the snake head to new position
             picture.translate(dx, dy);
         }
     }
@@ -129,7 +131,7 @@ public class Snake {
      * The timer triggers the move method at regular intervals
      */
     private void startMovement() {
-        timer = new Timer(100, new ActionListener() {
+        timer = new Timer(150, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 move();
