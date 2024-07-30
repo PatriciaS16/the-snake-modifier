@@ -40,9 +40,28 @@ public class Grid {
      * @return True if object is within bounds, else false
      */
     public boolean isWithinBounds(int x, int y, int width, int height) {
-        return x >= padding &&
-                y >= padding &&
-                (x + width) <= (background.getWidth() - padding + 20) &&
-                (y + height) <= (background.getHeight() - padding + 20);
+        int gridWidth = background.getWidth();
+        int gridHeight = background.getHeight();
+
+        // Adjust boundary checking with -10 for left and top, and +20 for right and bottom
+        boolean withinLeft = x >= padding - 10;
+        boolean withinTop = y >= padding - 10;
+        boolean withinRight = x + width <= gridWidth - padding + 20;
+        boolean withinBottom = y + height <= gridHeight - padding + 20;
+
+        // Return true if all conditions are met
+        return withinLeft && withinTop && withinRight && withinBottom;
+    }
+
+    public int getPadding() {
+        return padding;
+    }
+
+    public int getWidth() {
+        return background.getWidth();
+    }
+
+    public int getHeight() {
+        return background.getHeight();
     }
 }

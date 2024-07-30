@@ -166,6 +166,7 @@ public class Menu {
 
         // Initialize a new game instance
         Game game = new Game();
+        game.startGameLoop();
 
         // Initialize keyboard controls for the game
         MyKeyboard myKeyboard = new MyKeyboard();
