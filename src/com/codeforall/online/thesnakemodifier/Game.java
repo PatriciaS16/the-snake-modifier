@@ -2,6 +2,8 @@ package com.codeforall.online.thesnakemodifier;
 
 import org.academiadecodigo.simplegraphics.pictures.Picture;
 
+import java.util.LinkedList;
+
 /**
  * The Game class sets up the game environment, including the grid and the snake
  * It initializes the game components and manages their interactions
@@ -63,9 +65,25 @@ public class Game {
      */
 
     public void gameOver() {
-        if (CollisionHandler.checkSelfCollision() == true || grid.isWithinBounds() == false) {
-            System.exit();
+        int x = snake.getHeadX();
+        int y = snake.getHeadY();
+        LinkedList<Picture> snakeBody = snake.getBody();
+
+        Picture headPicture = snakeBody.getFirst();
+        int headWidth = headPicture.getWidth();
+        int headHeight = headPicture.getHeight();
+
+        if (CollisionHandler.checkSelfCollision(x, y, snakeBody) ||
+                !grid.isWithinBounds(x, y, headWidth, headHeight)) {
+            endGame();
         }
     }
+
+    public void endGame() {
+        if (gameOver) {
+            System.exit(0);
+        }
+    }
+
 }
 
