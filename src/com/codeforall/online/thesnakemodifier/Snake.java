@@ -4,6 +4,7 @@ import org.academiadecodigo.simplegraphics.pictures.Picture;
 import javax.swing.Timer;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.LinkedList;
 
 /**
  * The Snake Class represents a snake in the game. Is handles the snake movement
@@ -30,6 +31,15 @@ public class Snake {
      * The grid where the snake is moving
      */
     private Grid grid;
+
+    // Snake's X position
+    private int headX;
+
+    // Snake's head Y position
+    private int headY;
+
+    //Snake's body list
+    private LinkedList<Picture> body;
 
     /**
      * Constructs a Snake instance with the specified picture
@@ -136,5 +146,23 @@ public class Snake {
             }
         });
         timer.start();
+    }
+
+    /**
+     *
+     * getters to get the x & y of the snake's head position and body position to check for self collision
+     *
+     * @return
+     */
+    public int getHeadX() {
+        return headX;
+    }
+
+    public int getHeadY() {
+        return headY;
+    }
+
+    public LinkedList<Picture> getBody() {
+        return body;
     }
 }
