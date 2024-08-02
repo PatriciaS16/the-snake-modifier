@@ -32,8 +32,6 @@ public class Game {
     // Timer for controlling the game loop
     private Timer gameLoopTimer;
 
-    private Picture leftLog;
-
     /**
      * Constructs a Game instance and initializes game components.
      * Sets up the grid, snake, food, and collision handler.
