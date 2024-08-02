@@ -128,7 +128,7 @@ public class Snake {
      * Starts the movement timer to repeatedly move the snake.
      */
     private void startMovement() {
-        movementTimer = new Timer(700, new ActionListener() {
+        movementTimer = new Timer(7000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 move();

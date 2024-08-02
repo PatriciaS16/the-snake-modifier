@@ -1,5 +1,4 @@
-import com.codeforall.online.thesnakemodifier.Menu;
-import com.codeforall.online.thesnakemodifier.MyMouse;
+package com.codeforall.online.thesnakemodifier;
 
 /**
  * The Main class is responsible for the entry point of the game

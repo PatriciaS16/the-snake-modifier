@@ -12,7 +12,7 @@ import javax.swing.Timer;
  */
 public class Game {
 
-    public static final String PREFIX = "";  // Directory prefix for resource files
+    public static final String PREFIX = "resources/";  // Directory prefix for resource files
 
     // The snake object representing the player
     private Snake snake;
@@ -40,7 +40,7 @@ public class Game {
         int padding = 10;
 
         // Initialize the background picture and grid
-        Picture background = new Picture(10, 10, Game.PREFIX + "LighterBackground.png");
+        Picture background = new Picture(10, 10, Game.PREFIX + "LighterBackgroundLog.png");
         this.grid = new Grid(background, padding);
 
         // Initialize the snake with its picture and the grid
