@@ -30,19 +30,36 @@ public class Food {
      * If there is already food present, it will hide the old food first.
      */
     public void spawnFood() {
+        // Create a Random object to generate random numbers
         Random random = new Random();
 
-        // Calculate random position for the food within the grid boundaries
-        int x = random.nextInt(grid.getWidth() - 50) + grid.getPadding();
-        int y = random.nextInt(grid.getHeight() - 50) + grid.getPadding();
+        // Size of safe margin around the grid edges to prevent placing food too close to edges
+        int safeMargin = 50;
 
-        // Hide the old food if it exists
+        // Define the minimum x and y coordinates where food can be placed
+        int minX = 50;
+        int minY = 50;
+
+        // Calculate the maximum x and y coordinates where food can be placed
+        // This ensures the food stays within the grid boundaries considering the safe margin
+        int maxX = grid.getWidth() - safeMargin - minX;
+        int maxY = grid.getHeight() - safeMargin - minY;
+
+        // Generate a random x coordinate for the food within the defined range
+        int x = random.nextInt(maxX - minX + 1) + minX;
+
+        // Generate a random y coordinate for the food within the defined range
+        int y = random.nextInt(maxY - minY + 1) + minY;
+
+        // If there is already food on the screen, hide it before creating a new one
         if (food != null) {
-            hideFood();
+            hideFood();  // Call hideFood method to remove the old food
         }
 
-        // Create a new food item and draw it
+        // Create a new Picture object for the food at the random x and y coordinates
         food = new Picture(x, y, Game.PREFIX + "Fruit.png");
+
+        // Draw the new food item on the screen
         food.draw();
     }
 

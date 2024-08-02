@@ -5,7 +5,7 @@
     <target name="init" description="Initializes properties">
         <property name="project.name" value="the-snake-modifier" />
         <property name="src.dir" value="src" />
-        <property name="main.class" value="com.codeforall.online.the-snake-modifier.Main" />
+        <property name="main.class" value="com.codeforall.online.thesnakemodifier.Main" />
         <property name="build.dir" value="build" />
         <property name="classes.dir" value="${build.dir}/classes" />
         <property name="resources.dir" value="resources"/>
