@@ -12,6 +12,9 @@ public class CollisionHandler {
     // The snake object to check for collisions
     private Snake snake;
 
+    // Audio to play sound when collisions happen
+    private AudioPlayer audioPlayer;
+
     // The grid object to check for boundary collisions
     private Grid grid;
 
@@ -34,6 +37,7 @@ public class CollisionHandler {
         this.grid = grid;
         this.food = food;
         this.game = game;
+        this.audioPlayer = new AudioPlayer();
     }
 
     /**
@@ -45,6 +49,7 @@ public class CollisionHandler {
         // Check if the snake's head collides with the food
         if (isCollision(snake.getHead(), food.getPicture())) {
             System.out.println("Collision with food detected!");
+            audioPlayer.playAudio("food");
             food.handleSnakeEat(snake);  // Handle the snake eating the food
         }
 

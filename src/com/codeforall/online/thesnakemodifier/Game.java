@@ -29,6 +29,9 @@ public class Game {
     // Handles collision detection and game state changes
     private CollisionHandler collisionHandler;
 
+    //The AudioPlayer to use sound during the game
+    private AudioPlayer audioPlayer;
+
     // Flag to indicate if the game is over
     private boolean gameOver = false;
 
@@ -56,6 +59,15 @@ public class Game {
         // Initialize the food object and collision handler
         this.food = new Food(grid);
         this.collisionHandler = new CollisionHandler(snake, grid, food, this);
+
+        this.audioPlayer = new AudioPlayer();
+        audioPlayer.addAudio("arcade game",  "/arcadeLoop.wav");
+        audioPlayer.addAudio("bonus", "/bonus.wav");
+        audioPlayer.addAudio("food", "/Food.wav");
+        audioPlayer.addAudio("game over", "/ gameOver.wav");
+        audioPlayer.addAudio("intro",  " / intro.wav");
+        audioPlayer.addAudio("lose Score", "/ losePoints.wav");
+
     }
 
     /**
@@ -76,12 +88,20 @@ public class Game {
         return food;
     }
 
+
+
     /**
      * Updates the game state by moving the snake and checking for collisions.
      */
     public void updateGame() {
+        new Thread(() -> {
+        if (!gameOver) {
+            audioPlayer.playAudio("arcade game");
+        }
+    }).start();
+
         snake.move();                   // Move the snake
-        collisionHandler.checkCollisions(); // Check for collisions
+        collisionHandler.checkCollisions();// Check for collisions
     }
 
     /**
@@ -100,6 +120,10 @@ public class Game {
      */
     public void setGameOver(boolean gameOver) {
         this.gameOver = gameOver;
+        if (gameOver) {
+
+            audioPlayer.playAudio("game over");
+        }
     }
 
     /**
