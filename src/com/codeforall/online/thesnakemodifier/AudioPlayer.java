@@ -16,28 +16,58 @@ import java.io.IOException;
 
 public class AudioPlayer {
 
-    private final Map<String, String> audioFiles;
+    private Clip backgroundMusic;
+    private final Map<String, String> soundEffects;
 
     public AudioPlayer() {
-        audioFiles = new HashMap<>();
+        soundEffects = new HashMap<>();
     }
 
+    //Prepare the background music
+    public void addBackgroudMusic(String name, String filePath) {
+        try (InputStream audioStream = getClass().getResourceAsStream(filePath)) {
+            if (audioStream == null) {
+                System.out.println("File not found: " + name);
+                return;
+            }
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(audioStream);
+            backgroundMusic = AudioSystem.getClip();
+            backgroundMusic.open(audioInputStream);
+            backgroundMusic.loop(Clip.LOOP_CONTINUOUSLY); //create a loop for the music keeps playing
+        } catch (UnsupportedAudioFileException | LineUnavailableException | IOException e) {
+            e.printStackTrace();
+        }
+    }
+        //open the Background Music
+        public void startBackgroundMusic() {
+            if (backgroundMusic == null) {
+                backgroundMusic.start();
+            }
+        }
+        //Stop the backgroundMusic
+        public void stopBackgroundMusic() {
+            if (backgroundMusic != null) {
+                backgroundMusic.stop();
+            }
+        }
+
+
  //method to add audioFile to the map
-    public void addAudio(String name, String filePath){
-        audioFiles.put(name, filePath);
+    public void addSoundEffects(String name, String filePath){
+        soundEffects.put(name, filePath);
     }
 
     //method to play the audio by the name
-    public void playAudio(String name){
-        String filePath = audioFiles.get(name);
-        if(filePath == null){
+    public void playSoundEffects(String name) {
+        String filePath = soundEffects.get(name);
+        if (filePath == null) {
             System.out.println("Audio file not found: " + name);
-        return;
+            return;
         }
-        try{
+        try {
             //get the audio as a InputStream
             InputStream audioStream = getClass().getResourceAsStream(filePath);
-            if(audioStream == null) {
+            if (audioStream == null) {
                 System.out.println("File not found in this path" + filePath);
                 return;
             }
@@ -46,7 +76,7 @@ public class AudioPlayer {
             AudioInputStream audio = AudioSystem.getAudioInputStream(audioStream);
 
             //get a sound clip
-            Clip clip =AudioSystem.getClip();
+            Clip clip = AudioSystem.getClip();
 
             //add a listener for stop the audio play
             clip.addLineListener(new LineListener() {
@@ -65,9 +95,8 @@ public class AudioPlayer {
             clip.start();
             System.out.println("Audio started");
 
-            clip.drain();
 
-            }catch (UnsupportedAudioFileException e){
+        } catch (UnsupportedAudioFileException e) {
             System.out.println("The audio file is not supported");
             e.printStackTrace();
         } catch (LineUnavailableException e) {
@@ -78,6 +107,13 @@ public class AudioPlayer {
             e.printStackTrace();
         }
     }
+    public void close() {
+        if (backgroundMusic != null) {
+            backgroundMusic.close();
+        }
+        
+
+        }
     }
 
 
