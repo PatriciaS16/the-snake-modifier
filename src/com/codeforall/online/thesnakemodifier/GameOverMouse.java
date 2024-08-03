@@ -21,6 +21,12 @@ public class GameOverMouse implements MouseHandler {
      */
     private GameOverScreen gameOverScreen;
 
+
+    /**
+     * *
+     */
+    private Game game;
+
     /**
      * Initializes the mouse event handling
      */

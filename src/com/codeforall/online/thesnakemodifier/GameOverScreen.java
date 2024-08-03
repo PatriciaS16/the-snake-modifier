@@ -196,6 +196,7 @@ public class GameOverScreen {
         this.quitButton.delete();
         this.background.delete();
 
+
         // Create a new Game instance to restart the game
         Game newGame = new Game();
         newGame.startGameLoop();

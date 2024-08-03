@@ -82,13 +82,12 @@ public class AudioPlayer {
             clip.addLineListener(new LineListener() {
                 @Override
                 public void update(LineEvent event) {
-                    if (event.getType() == LineEvent.Type.STOP) {
-                        clip.close();
-                    }
+                    if (event.getType() == LineEvent.Type.STOP) clip.close();
                 }
             });
 
-            //open the audio clip
+
+                //open the audio clip
             clip.open(audio);
 
             //start the clip
@@ -107,13 +106,7 @@ public class AudioPlayer {
             e.printStackTrace();
         }
     }
-    public void close() {
-        if (backgroundMusic != null) {
-            backgroundMusic.close();
-        }
-        
-
-        }
     }
+
 
 

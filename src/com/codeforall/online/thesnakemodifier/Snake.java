@@ -76,8 +76,10 @@ public class Snake {
 
     /**
      * Moves the snake in the current direction and handles the growth and boundary checks.
+     *
+     * @return
      */
-    void move() {
+    Snake move() {
         int dx = 0;  // Change in x coordinate
         int dy = 0;  // Change in y coordinate
 
@@ -120,6 +122,7 @@ public class Snake {
         } else {
             System.out.println("Move out of bounds. Movement stopped.");
         }
+        return null;
     }
 
     /**
@@ -157,4 +160,5 @@ public class Snake {
     public List<Picture> getBody() {
         return body;
     }
+
 }

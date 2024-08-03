@@ -36,22 +36,22 @@ public class Game {
     // Timer for controlling the game loop
     private Timer gameLoopTimer;
 
+
     /**
      * Constructs a Game instance and initializes game components.
      * Sets up the grid, snake, food, and collision handler.
      */
     public Game() {
+
         int padding = 10;
 
         // Initialize the background picture and grid
         Picture background = new Picture(10, 10, Game.PREFIX + "LighterBackgroundLog.png");
         this.grid = new Grid(background, padding);
 
-
         // Initialize the snake with its picture and the grid
         Picture snakePicture = new Picture(400, 350, Game.PREFIX + "SnakeHead.png");
         this.snake = new Snake(snakePicture, grid);
-
 
 
         // Initialize the food object and collision handler
@@ -63,7 +63,7 @@ public class Game {
         audioPlayer.addSoundEffects("bonus", "/bonus.wav");
         audioPlayer.addSoundEffects("food", "/Food.wav");
         audioPlayer.addSoundEffects("game over", "/gameOver.wav");
-        audioPlayer.addSoundEffects("intro",  " /intro.wav");
+        audioPlayer.addSoundEffects("intro", " /intro.wav");
         audioPlayer.addSoundEffects("lose Score", "/losePoints.wav");
 
     }
@@ -87,16 +87,15 @@ public class Game {
     }
 
 
-
     /**
      * Updates the game state by moving the snake and checking for collisions.
      */
     public void updateGame() {
         new Thread(() -> {
-        if (!gameOver) {
-            audioPlayer.startBackgroundMusic();
-        }
-    }).start();
+            if (!gameOver) {
+                audioPlayer.startBackgroundMusic();
+            }
+        }).start();
 
         snake.move();                   // Move the snake
         collisionHandler.checkCollisions();// Check for collisions
@@ -124,13 +123,14 @@ public class Game {
     }
 
     /**
-     * Ends the game, stops the game loop timer, and exits the program.
+     * Ends the game, stops the game loop timer, and go to game over menu
      */
     public void endGame() {
         if (gameOver) {
             if (gameLoopTimer != null) {
                 gameLoopTimer.stop();  // Stop the game loop timer
-                audioPlayer.stopBackgroundMusic(); //stop game music
+                this.audioPlayer.stopBackgroundMusic();//stop game music
+                this.audioPlayer.addSoundEffects(null,null);
             }
             System.out.println("Game over!"); // Print game over message
 
@@ -140,7 +140,7 @@ public class Game {
             gameOverMouse.setGameOverScreen(gameOverScreen);
             gameOverMouse.init();
         }
-    }
+        }
 
     /**
      * Starts the game loop timer which repeatedly updates the game and checks for game over conditions.
@@ -150,9 +150,9 @@ public class Game {
             @Override
             public void actionPerformed(ActionEvent e) {
                 updateGame();          // Update the game state
-               if (checkGameOver()) { // Check if the game is over
-                   endGame();         // End the game if over
-              }
+                if (checkGameOver()) { // Check if the game is over
+                    endGame();         // End the game if over
+                }
             }
         });
         gameLoopTimer.start(); // Start the game loop timer

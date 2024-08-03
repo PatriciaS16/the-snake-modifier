@@ -55,7 +55,7 @@ public class CollisionHandler {
 
         // Check for boundary collision or self-collision
         if (isBoundaryCollision(snake.getHead()) || isSelfCollision()) {
-            game.setGameOver(true);  // End the game if a collision is detected
+            game.setGameOver(true);// End the game if a collision is detected
         }
     }
 
