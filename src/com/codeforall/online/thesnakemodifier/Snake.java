@@ -33,13 +33,18 @@ public class Snake {
 
         // Draw the head and body parts of the snake
         head.draw();
-        for (Picture part : body) {
-            part.draw();
+
+        Picture tail = new Picture(head.getX() - head.getWidth(), getHead().getY(), Game.PREFIX + "SnakeEnd.png" );
+        this.body.add(0,tail);
+
+        for (Picture snake : body) {
+            snake.draw();
         }
 
         // Start the movement of the snake
         startMovement();
     }
+
 
     /**
      * Changes the direction of the snake to LEFT if it's not already moving RIGHT.

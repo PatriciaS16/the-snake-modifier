@@ -3,6 +3,8 @@ package com.codeforall.online.thesnakemodifier;
 import org.academiadecodigo.simplegraphics.pictures.Picture;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.Timer;
 
 /**
@@ -16,6 +18,7 @@ public class Game {
 
     // The snake object representing the player
     private Snake snake;
+
 
     // The grid on which the game is played
     private Grid grid;
@@ -43,9 +46,12 @@ public class Game {
         Picture background = new Picture(10, 10, Game.PREFIX + "LighterBackgroundLog.png");
         this.grid = new Grid(background, padding);
 
+
         // Initialize the snake with its picture and the grid
         Picture snakePicture = new Picture(400, 350, Game.PREFIX + "SnakeHead.png");
         this.snake = new Snake(snakePicture, grid);
+
+
 
         // Initialize the food object and collision handler
         this.food = new Food(grid);
@@ -122,9 +128,9 @@ public class Game {
             @Override
             public void actionPerformed(ActionEvent e) {
                 updateGame();          // Update the game state
-                if (checkGameOver()) { // Check if the game is over
-                    endGame();         // End the game if over
-                }
+               if (checkGameOver()) { // Check if the game is over
+                   endGame();         // End the game if over
+              }
             }
         });
         gameLoopTimer.start(); // Start the game loop timer
