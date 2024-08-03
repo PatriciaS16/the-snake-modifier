@@ -105,7 +105,12 @@ public class Game {
                 gameLoopTimer.stop();  // Stop the game loop timer
             }
             System.out.println("Game over!"); // Print game over message
-            System.exit(0); // Exit the program
+
+            // Show the game over screen
+            GameOverScreen gameOverScreen = new GameOverScreen();
+            GameOverMouse gameOverMouse = new GameOverMouse();
+            gameOverMouse.setGameOverScreen(gameOverScreen);
+            gameOverMouse.init();
         }
     }
 
