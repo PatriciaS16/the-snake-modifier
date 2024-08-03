@@ -77,12 +77,13 @@ public class Game {
 
         // Initialize the audio player
         this.audioPlayer = new AudioPlayer();
-        audioPlayer.addAudio("arcade game", "/arcadeLoop.wav");
-        audioPlayer.addAudio("bonus", "/bonus.wav");
-        audioPlayer.addAudio("food", "/Fruit.wav");
-        audioPlayer.addAudio("game over", "/gameOver.wav");
-        audioPlayer.addAudio("intro", "/intro.wav");
-        audioPlayer.addAudio("lose Score", "/losePoints.wav");
+        audioPlayer.addBackgroudMusic("arcade game", "/arcadeLoop.wav");
+        audioPlayer.addSoundEffects("bonus", "/bonus.wav");
+        audioPlayer.addSoundEffects("food", "/Food.wav");
+        audioPlayer.addSoundEffects("game over", "/gameOver.wav");
+        audioPlayer.addSoundEffects("intro",  " /intro.wav");
+        audioPlayer.addSoundEffects("lose Score", "/losePoints.wav");
+
     }
 
     /**
@@ -99,10 +100,10 @@ public class Game {
      */
     public void updateGame() {
         new Thread(() -> {
-            if (!gameOver) {
-                audioPlayer.playAudio("arcade game");
-            }
-        }).start();
+        if (!gameOver) {
+            audioPlayer.startBackgroundMusic();
+        }
+    }).start();
 
         snake.move();                   // Move the snake
         collisionHandler.checkCollisions(); // Check for collisions
@@ -125,7 +126,7 @@ public class Game {
     public void setGameOver(boolean gameOver) {
         this.gameOver = gameOver;
         if (gameOver) {
-            audioPlayer.playAudio("game over");
+            audioPlayer.playSoundEffects("game over");
         }
     }
 
@@ -136,6 +137,7 @@ public class Game {
         if (gameOver) {
             if (gameLoopTimer != null) {
                 gameLoopTimer.stop();  // Stop the game loop timer
+                audioPlayer.stopBackgroundMusic(); //stop game music
             }
             System.out.println("Game over!"); // Print game over message
 

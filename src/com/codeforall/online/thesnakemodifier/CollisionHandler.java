@@ -57,7 +57,7 @@ public class CollisionHandler {
             if (currentFood instanceof Fruit) {
                 if (isCollision(snake.getHead(), ((Fruit) currentFood).getPicture())) {
                     System.out.println("Collision with fruit detected!");
-                    audioPlayer.playAudio("food"); // Play sound effect
+                    audioPlayer.playSoundEffects("food"); // Play sound effect
                     ((Fruit) currentFood).hideFruit(); // Hide the fruit
                     snake.grow(); // Grow the snake normally
                     currentFood = new FoodFactory(grid).createRandomFood(); // Create new food
