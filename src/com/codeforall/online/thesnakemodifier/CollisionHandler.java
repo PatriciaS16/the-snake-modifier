@@ -49,7 +49,7 @@ public class CollisionHandler {
         // Check if the snake's head collides with the food
         if (isCollision(snake.getHead(), food.getPicture())) {
             System.out.println("Collision with food detected!");
-            audioPlayer.playAudio("food");
+            audioPlayer.playSoundEffects("food");
             food.handleSnakeEat(snake);  // Handle the snake eating the food
         }
 
