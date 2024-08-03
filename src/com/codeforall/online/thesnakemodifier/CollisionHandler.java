@@ -65,7 +65,7 @@ public class CollisionHandler {
             } else if (currentFood instanceof Chili) {
                 if (isCollision(snake.getHead(), ((Chili) currentFood).getPicture())) {
                     System.out.println("Chili eaten! Snake grows twice as large.");
-                    audioPlayer.playAudio("food"); // Play sound effect
+                    audioPlayer.playSoundEffects("food"); // Play sound effect
                     snake.grow(); // Grow the snake once
                     snake.grow(); // Grow the snake again to account for the chili effect
                     ((Chili) currentFood).hideChili(); // Hide the chili
