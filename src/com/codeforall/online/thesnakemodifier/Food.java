@@ -23,6 +23,7 @@ public class Food {
     public Food(Grid grid) {
         this.grid = grid;
         spawnFood();  // Spawn the initial food item
+
     }
 
     /**
@@ -85,6 +86,7 @@ public class Food {
     public void handleSnakeEat(Snake snake) {
         snake.grow();       // Grow the snake
         spawnFood();        // Spawn a new food item
+        Score.getInstance().snakeEatsApple();    // Update the score
     }
 
     /**
