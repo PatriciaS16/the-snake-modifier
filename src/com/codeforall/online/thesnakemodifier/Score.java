@@ -3,12 +3,12 @@ package com.codeforall.online.thesnakemodifier;
 import javax.swing.*;
 import java.io.*;
 
-public class Score {
+/**
+ * The score class is responsible for:
+ * gain points everytime the snake eats a fruit, save and update the high score
+ */
 
-    /**
-     * The score class is responsible for:
-     * gain points everytime the snake eats a fruit, save and update the high score
-     */
+public class Score {
 
     private int score;
 
@@ -34,6 +34,10 @@ public class Score {
 
     public void snakeEatsApple() {
         score += 50;
+    }
+
+    public void snakeEatsChili() {
+        score += 100;
     }
 
 
@@ -123,4 +127,3 @@ public class Score {
         }
     }
 }
-

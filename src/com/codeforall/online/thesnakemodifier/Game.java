@@ -53,6 +53,11 @@ public class Game {
     private Timer gameLoopTimer;
 
     /**
+     * The score display to show the score
+     */
+    private ScoreDisplay scoreDisplay;
+
+    /**
      * Constructs a Game instance and initializes game components.
      * Sets up the grid, snake, food, and collision handler.
      */
@@ -84,6 +89,9 @@ public class Game {
         audioPlayer.addSoundEffects("intro",  " /intro.wav");
         audioPlayer.addSoundEffects("lose Score", "/losePoints.wav");
 
+        // Initialize the score display
+        scoreDisplay = new ScoreDisplay(650, 30);
+
     }
 
     /**
@@ -100,13 +108,16 @@ public class Game {
      */
     public void updateGame() {
         new Thread(() -> {
-        if (!gameOver) {
-            audioPlayer.startBackgroundMusic();
-        }
-    }).start();
+            if (!gameOver) {
+                audioPlayer.startBackgroundMusic();
+            }
+        }).start();
 
         snake.move();                   // Move the snake
         collisionHandler.checkCollisions(); // Check for collisions
+
+        // Update the score display with the latest score
+        scoreDisplay.updateScore();
     }
 
     /**
@@ -163,5 +174,7 @@ public class Game {
             }
         });
         gameLoopTimer.start(); // Start the game loop timer
+        Score.getInstance().resetScore(); // Reset the score
     }
 }
+
