@@ -59,6 +59,11 @@ public class GameOverScreen {
      */
     private boolean gameOver;
 
+    /**
+     * Picture for score button
+     */
+    private Picture scoreButton;
+
 
     /**
      * Constructs a GameOverScreen
@@ -85,7 +90,7 @@ public class GameOverScreen {
         this.youLose = new Picture(10,10, Game.PREFIX + "GameOver.png");
         this.youLose.draw();
 
-        // Initialize a snake body and food for visual
+        // Initialize a snake body and fruit for visual
         this.snakeHead = new Picture(450,200,Game.PREFIX + "SnakeHead.png");
         this.snakeHead.draw();
 
@@ -109,6 +114,10 @@ public class GameOverScreen {
 
         this.fruit = new Picture(520,200,Game.PREFIX + "Fruit.png");
         this.fruit.draw();
+
+        // Initialize and draw the score button
+        this.scoreButton = new Picture(350, 570, Game.PREFIX + "Score.png");
+        this.scoreButton.draw();
 
         // Set gameOver to true initially
         this.gameOver = true;
@@ -190,11 +199,24 @@ public class GameOverScreen {
      * Restart the game by creating a new Game instance
      */
     public void restartGame() {
-        // Hide the game over screen
+
         this.rectangle.delete();
-        this.restartButton.delete();
-        this.quitButton.delete();
         this.background.delete();
+        this.quitButton.delete();
+        this.restartButton.delete();
+        this.youLose.delete();
+        this.snakeHead.delete();
+        this.snakeBody.delete();
+        this.snakeBody.delete();
+        this.snakeBody.delete();
+        this.snakeBody.delete();
+        this.snakeBody.delete();
+        this.snakeBody.delete();
+        this.snakeBody.delete();
+        this.snakeEnd.delete();
+        this.fruit.delete();
+        this.scoreButton.delete();
+
 
         // Create a new Game instance to restart the game
         Game newGame = new Game();
@@ -204,13 +226,6 @@ public class GameOverScreen {
         MyKeyboard myKeyboard = new MyKeyboard();
         myKeyboard.setSnake(newGame.getSnake());
         myKeyboard.init();
-
-        // Initialize mouse events if needed
-        GameOverMouse gameOverMouse = new GameOverMouse();
-        // Resets the GameOverMouse instance making sure
-        // that there are no residual references or display elements related to the previous game over state
-        gameOverMouse.setGameOverScreen(null);
-        gameOverMouse.init();
     }
 
     /**
