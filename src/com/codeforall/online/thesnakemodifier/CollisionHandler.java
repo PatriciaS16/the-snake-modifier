@@ -59,6 +59,7 @@ public class CollisionHandler {
                     System.out.println("Collision with fruit detected!");
                     audioPlayer.playSoundEffects("food"); // Play sound effect
                     ((Fruit) currentFood).hideFruit(); // Hide the fruit
+                    Score.getInstance().snakeEatsApple(); // Update the score
                     snake.grow(); // Grow the snake normally
                     currentFood = new FoodFactory(grid).createRandomFood(); // Create new food
                 }
