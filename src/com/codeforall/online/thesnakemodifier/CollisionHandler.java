@@ -3,68 +3,90 @@ package com.codeforall.online.thesnakemodifier;
 import org.academiadecodigo.simplegraphics.pictures.Picture;
 
 /**
- * The CollisionHandler class is responsible for detecting collisions between
- * the snake and food, as well as boundary and self-collisions. It interacts with
- * the Snake, Grid, Food, and Game classes to manage collision logic and handle game state.
+ * The CollisionHandler class manages the detection and handling of collisions
+ * between the snake and food items and boundary collisions.
  */
 public class CollisionHandler {
 
-    // The snake object to check for collisions
+    /**
+     * The snake instance
+     */
     private Snake snake;
 
-    // Audio to play sound when collisions happen
-    private AudioPlayer audioPlayer;
-
-    // The grid object to check for boundary collisions
+    /**
+     * The grid on which the snake moves
+     */
     private Grid grid;
 
-    // The food object to check for collisions with the snake
-    private Food food;
+    /**
+     *  Current food item either fruit or chili
+     */
+    private Object currentFood;
 
-    // The game object to manage game state
+    /**
+     * The game instance for game state management
+     */
     private Game game;
 
     /**
-     * Constructs a CollisionHandler instance with the specified snake, grid, food, and game.
-     *
-     * @param snake The snake object to be used for collision detection
-     * @param grid The grid object used for boundary collision detection
-     * @param food The food object to check for collisions with the snake
-     * @param game The game object to manage game state
+     * For playing sound effects
      */
-    public CollisionHandler(Snake snake, Grid grid, Food food, Game game) {
+    private AudioPlayer audioPlayer;
+
+    /**
+     * Constructs a CollisionHandler instance with the specified parameters.
+     *
+     * @param snake The snake instance
+     * @param grid The grid on which the snake moves
+     * @param food The current food item
+     * @param game The game instance
+     */
+    public CollisionHandler(Snake snake, Grid grid, Object food, Game game) {
         this.snake = snake;
         this.grid = grid;
-        this.food = food;
+        this.currentFood = food;
         this.game = game;
-        this.audioPlayer = new AudioPlayer();
+        this.audioPlayer = new AudioPlayer(); // Initialize the audio player
     }
 
     /**
-     * Checks for collisions between the snake and other objects (food, boundaries, self).
-     * If a collision with food is detected, it triggers the snake to grow and spawns new food.
-     * If a boundary or self-collision is detected, it sets the game over state.
+     * Checks for collisions between the snake and food, boundary and self-collisions.
      */
     public void checkCollisions() {
-        // Check if the snake's head collides with the food
-        if (isCollision(snake.getHead(), food.getPicture())) {
-            System.out.println("Collision with food detected!");
-            audioPlayer.playSoundEffects("food");
-            food.handleSnakeEat(snake);  // Handle the snake eating the food
+        if (currentFood != null) {
+            if (currentFood instanceof Fruit) {
+                if (isCollision(snake.getHead(), ((Fruit) currentFood).getPicture())) {
+                    System.out.println("Collision with fruit detected!");
+                    audioPlayer.playSoundEffects("food"); // Play sound effect
+                    ((Fruit) currentFood).hideFruit(); // Hide the fruit
+                    Score.getInstance().snakeEatsApple(); // Update the score
+                    snake.grow(); // Grow the snake normally
+                    currentFood = new FoodFactory(grid).createRandomFood(); // Create new food
+                }
+            } else if (currentFood instanceof Chili) {
+                if (isCollision(snake.getHead(), ((Chili) currentFood).getPicture())) {
+                    System.out.println("Chili eaten! Snake grows twice as large.");
+                    audioPlayer.playSoundEffects("food"); // Play sound effect
+                    snake.grow(); // Grow the snake once
+                    snake.grow(); // Grow the snake again to account for the chili effect
+                    ((Chili) currentFood).hideChili(); // Hide the chili
+                    currentFood = new FoodFactory(grid).createRandomFood(); // Create new food
+                }
+            }
         }
 
-        // Check for boundary collision or self-collision
+        // Check for boundary collisions
         if (isBoundaryCollision(snake.getHead()) || isSelfCollision()) {
-            game.setGameOver(true);  // End the game if a collision is detected
+            game.setGameOver(true); // End the game if collision detected
         }
     }
 
     /**
      * Determines if there is a collision between two pictures.
      *
-     * @param pic1 The first picture to check for collision
-     * @param pic2 The second picture to check for collision
-     * @return true if there is a collision between the two pictures; false otherwise
+     * @param pic1 The first picture
+     * @param pic2 The second picture
+     * @return true if there is a collision, false otherwise
      */
     private boolean isCollision(Picture pic1, Picture pic2) {
         return pic1.getX() < pic2.getX() + pic2.getWidth() &&
@@ -74,10 +96,10 @@ public class CollisionHandler {
     }
 
     /**
-     * Checks if the given picture (e.g., the snake's head) collides with the boundaries of the grid.
+     * Checks if the snake's head has collided with the grid boundaries.
      *
-     * @param picture The picture to check for boundary collision
-     * @return true if the picture collides with any boundary; false otherwise
+     * @param picture The picture representing the snake's head
+     * @return true if there is a boundary collision, false otherwise
      */
     private boolean isBoundaryCollision(Picture picture) {
         int x = picture.getX();
@@ -94,17 +116,17 @@ public class CollisionHandler {
     }
 
     /**
-     * Checks if the snake's head collides with any of its body parts.
+     * Checks if the snake has collided with itself.
      *
-     * @return true if the snake's head collides with any body part; false otherwise
+     * @return true if there is a self-collision, false otherwise
      */
     private boolean isSelfCollision() {
         Picture head = snake.getHead();
         for (Picture bodyPart : snake.getBody()) {
             if (isCollision(head, bodyPart)) {
-                return true;  // Collision detected with a body part
+                return true;
             }
         }
-        return false;  // No collision detected
+        return false;
     }
 }

@@ -12,28 +12,44 @@ import javax.swing.Timer;
  */
 public class Game {
 
-    public static final String PREFIX = "resources/";  // Directory prefix for resource files
+    /**
+     * Directory prefix for resource files
+     */
+    public static final String PREFIX = "resources/";
 
-    // The snake object representing the player
+    /**
+     * The snake object representing the player
+     */
     private Snake snake;
 
-
-    // The grid on which the game is played
+    /**
+     * The grid on which the game is played
+     */
     private Grid grid;
 
-    // The food object that the snake can eat
-    private Food food;
+    /**
+     * The food object that the snake can eat
+     */
+    private Fruit food;
 
-    // Handles collision detection and game state changes
+    /**
+     * Handles collision detection and game state changes
+     */
     private CollisionHandler collisionHandler;
 
-    //The AudioPlayer to use sound during the game
+    /**
+     * Manages audio playback for the game
+     */
     private AudioPlayer audioPlayer;
 
-    // Flag to indicate if the game is over
+    /**
+     * Flag to indicate if the game is over
+     */
     private boolean gameOver = false;
 
-    // Timer for controlling the game loop
+    /**
+     * Timer to controlling the game loop
+     */
     private Timer gameLoopTimer;
 
     /**
@@ -41,23 +57,25 @@ public class Game {
      * Sets up the grid, snake, food, and collision handler.
      */
     public Game() {
+
         int padding = 10;
 
         // Initialize the background picture and grid
         Picture background = new Picture(10, 10, Game.PREFIX + "LighterBackgroundLog.png");
         this.grid = new Grid(background, padding);
 
-
         // Initialize the snake with its picture and the grid
         Picture snakePicture = new Picture(400, 350, Game.PREFIX + "SnakeHead.png");
         this.snake = new Snake(snakePicture, grid);
 
+        // Use the FoodFactory to create the food object
+        FoodFactory foodFactory = new FoodFactory(grid);
+        this.food = (Fruit) foodFactory.createFood(FoodType.FRUIT);
 
-
-        // Initialize the food object and collision handler
-        this.food = new Food(grid);
+        // Initialize the collision handler
         this.collisionHandler = new CollisionHandler(snake, grid, food, this);
 
+        // Initialize the audio player
         this.audioPlayer = new AudioPlayer();
         audioPlayer.addBackgroudMusic("arcade game", "/arcadeLoop.wav");
         audioPlayer.addSoundEffects("bonus", "/bonus.wav");
@@ -78,17 +96,6 @@ public class Game {
     }
 
     /**
-     * Gets the food object for the game.
-     *
-     * @return The food object
-     */
-    public Food getFood() {
-        return food;
-    }
-
-
-
-    /**
      * Updates the game state by moving the snake and checking for collisions.
      */
     public void updateGame() {
@@ -99,7 +106,7 @@ public class Game {
     }).start();
 
         snake.move();                   // Move the snake
-        collisionHandler.checkCollisions();// Check for collisions
+        collisionHandler.checkCollisions(); // Check for collisions
     }
 
     /**
@@ -150,9 +157,9 @@ public class Game {
             @Override
             public void actionPerformed(ActionEvent e) {
                 updateGame();          // Update the game state
-               if (checkGameOver()) { // Check if the game is over
-                   endGame();         // End the game if over
-              }
+                if (checkGameOver()) { // Check if the game is over
+                    endGame();         // End the game if over
+                }
             }
         });
         gameLoopTimer.start(); // Start the game loop timer
