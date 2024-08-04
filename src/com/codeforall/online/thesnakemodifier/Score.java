@@ -80,19 +80,28 @@ public class Score {
             return "0";
         }
         finally {
-            if (reader != null) {
-                reader.close();
+            try {
+                if (reader != null)
+                    reader.close();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
     }
 
     /**
      * method to check if the score is higher than the high score
-     * IF true than update the high score
+     * IF true than update the high score.
+     * Saves the file with the High Score (HighScore.txt) and creates the file if the file does not exist
      */
     public void CheckScore() throws IOException {
+
+        // if the highScore is 0 than exist the method, since there isno score to check
+        if (highScore == 0) {
+            return;
+        }
+
         if (score > highScore) {
-            String message = JOptionPane.showInputDialog("You set a new high score");
             highScore += score;
 
             // save the score
@@ -120,8 +129,7 @@ public class Score {
                     if (writer != null)
                         writer.close();
                 }
-                catch  (Exception e){
-
+                catch (Exception e) {
                 }
             }
         }
