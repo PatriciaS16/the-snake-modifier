@@ -21,6 +21,11 @@ public class MyKeyboard implements KeyboardHandler {
     private Snake snake;
 
     /**
+     * Boolean to ensure cheat code is used only once
+     */
+    private boolean cheatCodeActivated = false;
+
+    /**
      * Initializes the keyboard event handling
      * Sets keyboard instance and add listeners for specific keys
      */
@@ -49,11 +54,17 @@ public class MyKeyboard implements KeyboardHandler {
         up.setKey(KeyboardEvent.KEY_W);
         up.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
 
+        // Create a keyboard event for the key "SPACE" (cheat code)
+        KeyboardEvent space = new KeyboardEvent();
+        space.setKey(KeyboardEvent.KEY_SPACE);
+        space.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
+
         // Add listeners for defined keyboard events
         keyboard.addEventListener(right);    
         keyboard.addEventListener(left);
         keyboard.addEventListener(down);
         keyboard.addEventListener(up);
+        keyboard.addEventListener(space);
     }
 
     /**
@@ -90,6 +101,13 @@ public class MyKeyboard implements KeyboardHandler {
                 // Calls the snake method to move up
                 snake.moveUp();
                 break;
+            case KeyboardEvent.KEY_SPACE:
+                if (!cheatCodeActivated) {
+                    // Activate cheat code on space bar press
+                    activateCheatCode();
+                    cheatCodeActivated = true;
+                }
+                break;
             default:
                 // Print a message if any other key is pressed
                 System.out.println("Unknown key pressed!");
@@ -111,6 +129,15 @@ public class MyKeyboard implements KeyboardHandler {
      */
     public void setSnake(Snake snake) {
         this.snake = snake;
+    }
+
+    /**
+     * Activates the cheat code by adding 300 points to the score
+     * It's called when the space bar is pressed but only if the cheat code hasn't been activated yet
+     */
+    private void activateCheatCode() {
+        System.out.println("Cheat code activated: Adding 300 points!");
+        Score.getInstance().addPoints(300); // Add 300 points to the score
     }
 }
 

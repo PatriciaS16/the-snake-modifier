@@ -24,7 +24,7 @@ public class AudioPlayer {
     }
 
     //Prepare the background music
-    public void addBackgroudMusic(String name, String filePath) {
+    public void addBackgroundMusic(String name, String filePath) {
         try (InputStream audioStream = getClass().getResourceAsStream(filePath)) {
             if (audioStream == null) {
                 System.out.println("File not found: " + name);
@@ -111,8 +111,6 @@ public class AudioPlayer {
         if (backgroundMusic != null) {
             backgroundMusic.close();
         }
-        
-
         }
     }
 

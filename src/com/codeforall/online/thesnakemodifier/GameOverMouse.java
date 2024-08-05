@@ -58,6 +58,15 @@ public class GameOverMouse implements MouseHandler {
                 gameOverScreen.quitGame();
                 System.out.println("Quitting Game");
             }
+            // Check if the click is within the score button area
+            else if (mouseEvent.getY() >= gameOverScreen.getScoreButtonTop() &&
+                    mouseEvent.getY() <= gameOverScreen.getScoreButtonBottom() &&
+                    mouseEvent.getX() >= gameOverScreen.getScoreButtonLeft() &&
+                    mouseEvent.getX() <= gameOverScreen.getScoreButtonRight()) {
+                //Show score
+                gameOverScreen.showHighScores();
+                System.out.println("Showing High Score");
+            }
         }
     }
 

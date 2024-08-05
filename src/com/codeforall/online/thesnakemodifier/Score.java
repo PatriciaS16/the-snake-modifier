@@ -1,26 +1,41 @@
 package com.codeforall.online.thesnakemodifier;
 
-import javax.swing.*;
 import java.io.*;
 
 /**
- * The score class is responsible for:
+ * The score class is responsible for
  * gain points everytime the snake eats a fruit, save and update the high score
  */
-
 public class Score {
 
+    /**
+     * The current score of the player
+     */
     private int score;
 
+    /**
+     * Singleton instance of the Score class
+     */
     private static Score instance;
 
+    /**
+     * The highest score achieved in the game
+     */
     private int highScore;
 
-
+    /**
+     * Private constructor for the Score class.
+     * Initializes the score and loads the high score from file.
+     */
     private Score() {
         score = 0;
+        loadHighScore();
     }
 
+    /**
+     * Retrieves the singleton instance of the Score class.
+     * @return the singleton instance of the Score class
+     */
     public static Score getInstance() {
         if (instance == null) {
             instance = new Score();
@@ -29,101 +44,87 @@ public class Score {
     }
 
     /**
-     * method to handle the score when the snake eats an apple
+     * Increases the score when the snake eats an apple.
      */
-
     public void snakeEatsApple() {
         score += 50;
     }
 
+    /**
+     * Increases the score when the snake eats a chili.
+     */
     public void snakeEatsChili() {
         score += 100;
     }
 
+    /**
+     *   Adds a specified number of points to the score
+     */
+    public void addPoints(int points) {
+        score += points;
+    }
 
+    /**
+     * Gets the current score.
+     * @return the current score
+     */
     public int getScore() {
         return score;
     }
 
     /**
-     * method to reset the score when the user loses the game
+     * Resets the score to zero.
      */
     public void resetScore() {
         score = 0;
     }
 
-
-
     /**
-     * Method to handle the points gained when the snake eats an apple
+     * Checks if the current score is higher than the high score.
+     * Updates the high score and saves it to the file if necessary.
+     * @throws IOException if an I/O error occurs while saving the high score
      */
-    public int SnakeEatsApple(int score) {
-        this.score = score;
-        score += 50;
-        return score;
-    }
-
-    /**
-     * Method to read the high score fom the file HighScore.txt
-     * Create a buffered reader to read strings from the system
-     * If the file is not found, returns 0
-     */
-
-    public String GetHighScore() throws IOException {
-        FileReader readFile = null;
-        BufferedReader reader = null;
-        try {
-            readFile = new FileReader("HighScore.txt");
-            reader = new BufferedReader(readFile);
-            return reader.readLine();
-        } catch (Exception e) {
-            return "0";
-        }
-        finally {
-            if (reader != null) {
-                reader.close();
-            }
-        }
-    }
-
-    /**
-     * method to check if the score is higher than the high score
-     * IF true than update the high score
-     */
-    public void CheckScore() throws IOException {
+    public void checkScore() throws IOException {
         if (score > highScore) {
-            String message = JOptionPane.showInputDialog("You set a new high score");
-            highScore += score;
-
-            // save the score
-            File scoreFile = new File("HighScore.txt");
-            if (!scoreFile.exists()) {
-                try {
-                    scoreFile.createNewFile();
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-
-            FileWriter writeFile = null;
-            BufferedWriter writer = null;
-            try {
-                writeFile = new FileWriter(scoreFile);
-                writer = new BufferedWriter(writeFile);
-                writer.write(this.highScore);
-            }
-            catch (Exception e) {
-                // errors
-            }
-            finally {
-                try {
-                    if (writer != null)
-                        writer.close();
-                }
-                catch  (Exception e){
-
-                }
-            }
+            highScore = score;
+            saveHighScore();
         }
+    }
+
+    /**
+     * Loads the high score from the "HighScore.txt" file.
+     */
+    private void loadHighScore() {
+        File file = new File("HighScore.txt");
+        if (file.exists()) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+                String line = reader.readLine();
+                if (line != null) {
+                    highScore = Integer.parseInt(line);
+                }
+            } catch (IOException | NumberFormatException e) {
+                e.printStackTrace();
+            }
+        } else {
+            highScore = 0;
+        }
+    }
+
+    /**
+     * Saves the high score to the "HighScore.txt" file.
+     * @throws IOException if an I/O error occurs while saving the high score
+     */
+    private void saveHighScore() throws IOException {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("HighScore.txt"))) {
+            writer.write(String.valueOf(highScore));
+        }
+    }
+
+    /**
+     * Gets the high score.
+     * @return the high score
+     */
+    public int getHighScore() {
+        return highScore;
     }
 }
