@@ -3,6 +3,7 @@ package com.codeforall.online.thesnakemodifier;
 import org.academiadecodigo.simplegraphics.pictures.Picture;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import javax.swing.Timer;
 
 /**
@@ -82,7 +83,7 @@ public class Game {
 
         // Initialize the audio player
         this.audioPlayer = new AudioPlayer();
-        audioPlayer.addBackgroudMusic("arcade game", "/arcadeLoop.wav");
+        audioPlayer.addBackgroundMusic("arcade game", "/arcadeLoop.wav");
         audioPlayer.addSoundEffects("bonus", "/bonus.wav");
         audioPlayer.addSoundEffects("food", "/Food.wav");
         audioPlayer.addSoundEffects("game over", "/gameOver.wav");
@@ -112,10 +113,8 @@ public class Game {
                 audioPlayer.startBackgroundMusic();
             }
         }).start();
-
         snake.move();                   // Move the snake
         collisionHandler.checkCollisions(); // Check for collisions
-
         // Update the score display with the latest score
         scoreDisplay.updateScore();
     }
@@ -152,6 +151,13 @@ public class Game {
             }
             System.out.println("Game over!"); // Print game over message
 
+            // Save the score
+            try {
+                Score.getInstance().checkScore();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
             // Show the game over screen
             GameOverScreen gameOverScreen = new GameOverScreen();
             GameOverMouse gameOverMouse = new GameOverMouse();
@@ -177,4 +183,3 @@ public class Game {
         Score.getInstance().resetScore(); // Reset the score
     }
 }
-

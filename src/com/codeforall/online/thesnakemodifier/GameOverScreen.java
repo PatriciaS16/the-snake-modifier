@@ -2,6 +2,7 @@ package com.codeforall.online.thesnakemodifier;
 
 import org.academiadecodigo.simplegraphics.graphics.Rectangle;
 import org.academiadecodigo.simplegraphics.pictures.Picture;
+import javax.swing.*;
 
 /**
  * The GameOverScreen class represents the game over screen.
@@ -188,6 +189,48 @@ public class GameOverScreen {
     }
 
     /**
+     * Get the top coordinate of the score button
+     * @return the top of the score button
+     */
+    public int getScoreButtonTop() {
+        return scoreButton.getY();
+    }
+
+    /**
+     * Get the left coordinate of the score button
+     * @return the left of the score button
+     */
+    public int getScoreButtonLeft() {
+        return scoreButton.getX();
+    }
+
+    /**
+     * Get the right coordinate of the score button
+     * @return the right of the score button
+     */
+    public int getScoreButtonRight() {
+        return scoreButton.getX() + scoreButton.getWidth();
+    }
+
+    /**
+     * Get the bottom coordinate of the score button
+     * @return the bottom of the score button
+     */
+    public int getScoreButtonBottom() {
+        return scoreButton.getY() + scoreButton.getHeight();
+    }
+
+    /**
+     * Displays the high score in a message
+     */
+    public void showHighScores() {
+        Score scoreInstance = Score.getInstance();
+        int highScore = scoreInstance.getHighScore();
+        String highScoresText = "High Score: " + highScore;
+        JOptionPane.showMessageDialog(null, highScoresText);
+    }
+
+    /**
      * Checks if the game is over
      * @return true if the game is over, else false
      */
@@ -204,6 +247,7 @@ public class GameOverScreen {
         this.background.delete();
         this.quitButton.delete();
         this.restartButton.delete();
+        this.scoreButton.delete();
         this.youLose.delete();
         this.snakeHead.delete();
         this.snakeBody.delete();
@@ -215,8 +259,6 @@ public class GameOverScreen {
         this.snakeBody.delete();
         this.snakeEnd.delete();
         this.fruit.delete();
-        this.scoreButton.delete();
-
 
         // Create a new Game instance to restart the game
         Game newGame = new Game();
