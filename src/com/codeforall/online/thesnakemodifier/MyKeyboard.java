@@ -59,12 +59,18 @@ public class MyKeyboard implements KeyboardHandler {
         space.setKey(KeyboardEvent.KEY_SPACE);
         space.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
 
+        // Create a keyboard event for the key "K" (easy mode)
+        KeyboardEvent easymode = new KeyboardEvent();
+        easymode.setKey(KeyboardEvent.KEY_K);
+        easymode.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
+
         // Add listeners for defined keyboard events
         keyboard.addEventListener(right);    
         keyboard.addEventListener(left);
         keyboard.addEventListener(down);
         keyboard.addEventListener(up);
         keyboard.addEventListener(space);
+        keyboard.addEventListener(easymode);
     }
 
     /**
@@ -108,6 +114,14 @@ public class MyKeyboard implements KeyboardHandler {
                     cheatCodeActivated = true;
                 }
                 break;
+                // Activate easy mode pressing "K"
+            case KeyboardEvent.KEY_K:
+                if (!Score.getInstance().isDoubleScoreActive()) {
+                    System.out.println("Double score activated!");
+                    Score.getInstance().activateDoubleScore();
+                } else {
+                    System.out.println("Double score already used.");
+                }
             default:
                 // Print a message if any other key is pressed
                 System.out.println("Unknown key pressed!");

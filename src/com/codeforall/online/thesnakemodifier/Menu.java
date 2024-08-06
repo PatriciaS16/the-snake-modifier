@@ -55,6 +55,11 @@ public class Menu {
     private boolean gameStarted;
 
     /**
+     * Picture for EasyMode
+     */
+    private Picture easyMode;
+
+    /**
      * Constructs a Menu
      * Initializes and draws the rectangle and picture for the menu
      */
@@ -86,8 +91,12 @@ public class Menu {
         this.borderBottom.draw();
 
         // Initialize and draw the picture StartButton within the rectangle
-        this.picture = new Picture(250 ,370, Game.PREFIX + "StartButton.png");
+        this.picture = new Picture(250 ,300, Game.PREFIX + "StartButton.png");
         this.picture.draw();
+
+        // Initialize and draw the picture for Easy Mode within the rectangle
+        this.easyMode = new Picture(10,10,Game.PREFIX + "EasyMode.png");
+        this.easyMode.draw();
 
         // Set the gameStarted to false initially
         this.gameStarted = false;
@@ -146,6 +155,7 @@ public class Menu {
             // Remove the menu rectangle and picture from the screen
             this.rectangle.delete();
             this.picture.delete();
+            this.easyMode.delete();
             // Print a message to indicate if game has started
             System.out.println("Game started!");
 
