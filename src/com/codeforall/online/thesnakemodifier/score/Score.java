@@ -1,13 +1,13 @@
-package com.codeforall.online.thesnakemodifier;
+package com.codeforall.online.thesnakemodifier.score;
 
-import javax.swing.*;
+import javax.swing.Timer;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
 
 /**
- * The score class is responsible for
- * gain points everytime the snake eats a fruit, save and update the high score
+ * The Score class is responsible for tracking points, saving/loading the high score,
+ * and managing the double score mode.
  */
 public class Score {
 
@@ -63,26 +63,21 @@ public class Score {
 
     /**
      * Increases the score when the snake eats an apple.
-     * The score is doubled when double score mode is active
+     * The score is doubled when double score mode is active.
      */
     public void snakeEatsApple() {
-        // Increase the score by 100 points if double score mode is active
-        // Otherwise, increase the score by 50 points
         score += (doubleScoreActive ? 100 : 50);
     }
 
     /**
      * Increases the score when the snake eats a chili.
-     * The score is active when double score mode is active
      */
     public void snakeEatsChili() {
-        // Increase the score by 200 points if double score mode is active
-        // Otherwise, increase the score by 100 points
         score += (doubleScoreActive ? 200 : 100);
     }
 
     /**
-     *   Adds a specified number of points to the score
+     * Adds a specified number of points to the score.
      */
     public void addPoints(int points) {
         score += points;
@@ -105,8 +100,8 @@ public class Score {
 
     /**
      * Checks if the current score is higher than the high score.
-     * Updates the high score and saves it to the file if necessary.
-     * @throws IOException if an I/O error occurs while saving the high score
+     * Updates and saves the high score if necessary.
+     * @throws IOException if an I/O error occurs while saving
      */
     public void checkScore() throws IOException {
         if (score > highScore) {
@@ -116,7 +111,7 @@ public class Score {
     }
 
     /**
-     * Loads the high score from the "HighScore.txt" file.
+     * Loads the high score from "HighScore.txt".
      */
     private void loadHighScore() {
         File file = new File("HighScore.txt");
@@ -135,8 +130,8 @@ public class Score {
     }
 
     /**
-     * Saves the high score to the "HighScore.txt" file.
-     * @throws IOException if an I/O error occurs while saving the high score
+     * Saves the high score to "HighScore.txt".
+     * @throws IOException if an I/O error occurs while saving
      */
     private void saveHighScore() throws IOException {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("HighScore.txt"))) {
@@ -148,26 +143,23 @@ public class Score {
      * Activates the double score mode for 10 seconds if it hasn't been used yet.
      */
     public void activateDoubleScore() {
-
         if (!doubleScoreUsed) {
-            doubleScoreActive = true;    // Enable double score mode
-            doubleScoreUsed = true;      // Mark double score mode as used to prevent reactivation
+            doubleScoreActive = true;
+            doubleScoreUsed = true;
 
-            // Stop any existing double score timer
             if (doubleScoreTimer != null) {
                 doubleScoreTimer.stop();
             }
 
-            // Create a timer to deactivate double score mode after 10 seconds
             doubleScoreTimer = new Timer(10000, new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    doubleScoreActive = false; // Deactivate double score mode
+                    doubleScoreActive = false;
                 }
             });
 
-            doubleScoreTimer.setRepeats(false); // Ensure the timer runs only once
-            doubleScoreTimer.start(); // Start the timer
+            doubleScoreTimer.setRepeats(false);
+            doubleScoreTimer.start();
         }
     }
 
@@ -176,10 +168,9 @@ public class Score {
      * @return true if double score mode is active, false otherwise
      */
     public boolean isDoubleScoreActive() {
-
-        // Return the status of doubleScoreActive to indicate if mode is enabled
         return doubleScoreActive;
     }
+
     /**
      * Gets the high score.
      * @return the high score

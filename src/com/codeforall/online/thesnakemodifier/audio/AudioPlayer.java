@@ -1,5 +1,6 @@
-package com.codeforall.online.thesnakemodifier;
+package com.codeforall.online.thesnakemodifier.audio;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
@@ -10,9 +11,6 @@ import javax.sound.sampled.LineEvent;
 import javax.sound.sampled.LineListener;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
-import java.io.IOException;
-
-
 
 public class AudioPlayer {
 
@@ -23,7 +21,7 @@ public class AudioPlayer {
         soundEffects = new HashMap<>();
     }
 
-    //Prepare the background music
+    // Prepare the background music
     public void addBackgroundMusic(String name, String filePath) {
         try (InputStream audioStream = getClass().getResourceAsStream(filePath)) {
             if (audioStream == null) {
@@ -33,31 +31,32 @@ public class AudioPlayer {
             AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(audioStream);
             backgroundMusic = AudioSystem.getClip();
             backgroundMusic.open(audioInputStream);
-            backgroundMusic.loop(Clip.LOOP_CONTINUOUSLY); //create a loop for the music keeps playing
+            backgroundMusic.loop(Clip.LOOP_CONTINUOUSLY);
         } catch (UnsupportedAudioFileException | LineUnavailableException | IOException e) {
             e.printStackTrace();
         }
     }
-        //open the Background Music
-        public void startBackgroundMusic() {
-            if (backgroundMusic == null) {
-                backgroundMusic.start();
-            }
-        }
-        //Stop the backgroundMusic
-        public void stopBackgroundMusic() {
-            if (backgroundMusic != null) {
-                backgroundMusic.stop();
-            }
-        }
 
+    // Start the background music
+    public void startBackgroundMusic() {
+        if (backgroundMusic != null) {
+            backgroundMusic.start();
+        }
+    }
 
- //method to add audioFile to the map
-    public void addSoundEffects(String name, String filePath){
+    // Stop the background music
+    public void stopBackgroundMusic() {
+        if (backgroundMusic != null) {
+            backgroundMusic.stop();
+        }
+    }
+
+    // Add an audio file to the sound effects map
+    public void addSoundEffects(String name, String filePath) {
         soundEffects.put(name, filePath);
     }
 
-    //method to play the audio by the name
+    // Play a sound effect by name
     public void playSoundEffects(String name) {
         String filePath = soundEffects.get(name);
         if (filePath == null) {
@@ -65,20 +64,13 @@ public class AudioPlayer {
             return;
         }
         try {
-            //get the audio as a InputStream
             InputStream audioStream = getClass().getResourceAsStream(filePath);
             if (audioStream == null) {
-                System.out.println("File not found in this path" + filePath);
+                System.out.println("File not found in this path: " + filePath);
                 return;
             }
-
-            //convert the inputStream in an AudioInputStream
             AudioInputStream audio = AudioSystem.getAudioInputStream(audioStream);
-
-            //get a sound clip
             Clip clip = AudioSystem.getClip();
-
-            //add a listener for stop the audio play
             clip.addLineListener(new LineListener() {
                 @Override
                 public void update(LineEvent event) {
@@ -87,15 +79,9 @@ public class AudioPlayer {
                     }
                 }
             });
-
-            //open the audio clip
             clip.open(audio);
-
-            //start the clip
             clip.start();
             System.out.println("Audio started");
-
-
         } catch (UnsupportedAudioFileException e) {
             System.out.println("The audio file is not supported");
             e.printStackTrace();
@@ -107,11 +93,10 @@ public class AudioPlayer {
             e.printStackTrace();
         }
     }
+
     public void close() {
         if (backgroundMusic != null) {
             backgroundMusic.close();
         }
-        }
     }
-
-
+}
