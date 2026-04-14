@@ -129,3 +129,6 @@ src/
 ## Collaboration Tools
 
 - **Discord** — team communication and meetings
+
+---
+
