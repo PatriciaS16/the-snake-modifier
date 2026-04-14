@@ -1,12 +1,11 @@
-package com.codeforall.online.thesnakemodifier;
+package com.codeforall.online.thesnakemodifier.food;
 
 /**
  * The FoodType enum represents the different types of food items that can appear in the game.
- * It is used to specify the food types.
  */
 public enum FoodType {
     /**
-     *  Represents a regular fruit food item.
+     * Represents a regular fruit food item.
      */
     FRUIT,
 
